@@ -7,7 +7,7 @@ PORT = int(os.environ.get("PORT", "8080"))
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # setsockopt
 server_socket.bind((HOST, PORT))
-server_socket.listen(1)
+server_socket.listen(2)
 print("Listening connections on {0}:{1}".format(HOST, PORT))
 
 while True:
@@ -15,10 +15,18 @@ while True:
     print("Got connection: {0}".format(client_address))
 
     request = client_socket.recv(1024)
-    print(request)
+    print(request.decode("UTF-8"))
 
-    client_socket.sendall(b"""HTTP/1.1 200 OK
-    
-    <h1><a href=\"http://dimini.tk\">Dimini Inc</a></h1>""")
+    client_socket.sendall(request)
 
+    client_socket.close()
+
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    inputtext = input("")
+    client_socket.connect(("localhost", 8080))
+    client_socket.sendall(bytes(inputtext, encoding='utf-8'))
+
+    response = client_socket.recv(1024)
+
+    print(response.decode("UTF-8"))
     client_socket.close()

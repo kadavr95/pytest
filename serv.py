@@ -8,5 +8,8 @@ app = Flask(__name__)
 def index():
     return "<h1><a href=\"http://dimini.tk\">Dimini Inc</a></h1>"
 
+@app.route("/memes")
+def memes():
+    return "<h1><a href=\"http://dimini.tk\">Dimini Inc love memes</a></h1>"
 
 app.run()
